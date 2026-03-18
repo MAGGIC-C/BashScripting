@@ -1,0 +1,19 @@
+1.- Mostrar las interfaces
+
+2.-Cambiar estado de interfaz
+		Mostrar interfaz Seleccionar cual quieres cambiar
+		
+3.- Conectar a red con una interfaz cableada o inalambrica
+		Mostrar interfaces
+		Seleccionar Interfaz (variable temporal)
+			Cableada
+				Estatica
+					Definir IP y Gateway
+				Dinamica
+			Wifi
+				Mostrar redes
+				Conectarse a red.
+					Estatica
+						Definir IP y Gateway
+					Dinamica
+4.- Guardar configuracion
