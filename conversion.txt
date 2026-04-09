@@ -1,0 +1,83 @@
+
+# Script para conversión de imágenes por lotes usando ImageMagick
+
+mostrar_ayuda() {
+    echo "Uso: $0 [-r] -a extensión_origen -b extensión_destino directorio"
+    echo ""
+    echo "Opciones:"
+    echo "  -a    Extensión de los archivos originales (ej. jpg, png)."
+    echo "  -b    Extensión para los archivos de salida (ej. webp, jpg)."
+    echo "  -r    Procesar subdirectorios de forma recursiva."
+    echo "  -h    Mostrar esta ayuda."
+    exit 1
+}
+
+# Inicialización de variables
+ORIGEN=""
+DESTINO=""
+RECURSIVO=false
+
+# Procesamiento de opciones
+while getopts "a:b:rh" opt; do
+    case "$opt" in
+        a) ORIGEN="$OPTARG" ;;
+        b) DESTINO="$OPTARG" ;;
+        r) RECURSIVO=true ;;
+        h) mostrar_ayuda ;;
+        *) mostrar_ayuda ;;
+    esac
+done
+
+shift $((OPTIND - 1))
+DIR_BASE="$1"
+
+# Validaciones iniciales
+if [[ -z "$ORIGEN" || -z "$DESTINO" || -z "$DIR_BASE" ]]; then
+    echo "Error: Faltan parámetros obligatorios."
+    mostrar_ayuda
+fi
+
+if [[ ! -d "$DIR_BASE" ]]; then
+    echo "Error: El directorio '$DIR_BASE' no existe."
+    exit 1
+fi
+
+# Comando para verificar existencia de ImageMagick
+if ! command -v magick &> /dev/null; then
+    CONVERT_CMD="convert"
+else
+    CONVERT_CMD="magick"
+fi
+
+# Configuración del globbing para recursividad
+if [ "$RECURSIVO" = true ]; then
+    shopt -s globstar
+    PATRON="$DIR_BASE/**/*.$ORIGEN"
+else
+    PATRON="$DIR_BASE/*.$ORIGEN"
+fi
+
+# Proceso de conversión
+encontrados=0
+for archivo in $PATRON; do
+    # Verificar si el archivo existe (evita errores si el glob no encuentra nada)
+    [[ -e "$archivo" ]] || continue
+    
+    # Expansión de parámetros para obtener el nombre sin extensión
+    # ${archivo%.*} elimina la extensión más corta a la derecha
+    salida="${archivo%.*}.$DESTINO"
+    
+    echo "Convirtiendo: $archivo -> $salida"
+    
+    if "$CONVERT_CMD" "$archivo" "$salida"; then
+        ((encontrados++))
+    else
+        echo "Error al procesar: $archivo" >&2
+    fi
+done
+
+if [[ $encontrados -eq 0 ]]; then
+    echo "No se encontraron archivos con la extensión .$ORIGEN en la ruta especificada."
+else
+    echo "Proceso finalizado. Se convirtieron $encontrados archivos."
+fi
