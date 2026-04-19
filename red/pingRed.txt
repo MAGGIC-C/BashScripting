@@ -1,0 +1,11 @@
+inicio
+
+	obtener direccion y mascara de subred.
+	enviar ping a cada direccion en la red
+	recibir el ping
+		si hay conexion
+			mostrar direccion del dispositivo
+		sino
+			cortar transmision y pasar al siguiente
+		is
+fin
