@@ -1,0 +1,6 @@
+inicio
+	Extraer codigo de la pagina
+	pasar codigo a un archivo
+	filtrar para extraer comentarios > pasar a arhchivo
+	filtrar para extraer mails > pasar a archivo
+fin
