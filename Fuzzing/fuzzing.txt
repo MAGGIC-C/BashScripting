@@ -1,0 +1,18 @@
+Inicio
+	Comprobar Diccionario
+		NoExiste{
+			Error: Salir.
+		}
+		
+	web=servidor
+	
+	For cadena in Diccionario; do{
+		if(llamada al servidor web/cadena.FFF == Codigos de respuesta correctos){
+			echo "$web/$cadnena $codigo"
+		}
+		else{
+			Deshechar cadena no encontrada
+		}
+		
+	}
+Fin

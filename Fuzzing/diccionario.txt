@@ -1,0 +1,8 @@
+index.html
+admin
+panel
+robot
+uploads
+images
+login.html
+config.php
